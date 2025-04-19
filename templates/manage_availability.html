@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gestionar Disponibilidad - Plataforma de Arriendo de Box</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <nav class="bg-blue-600 p-4 text-white flex justify-between items-center">
+        <h1 class="text-xl font-bold">Gestionar Disponibilidad</h1>
+        <a href="{{ url_for('panel_administrador') }}" class="hover:underline">Volver al Panel</a>
+    </nav>
+    <main class="p-6 max-w-4xl mx-auto">
+        <form method="POST" class="bg-white p-6 rounded shadow mb-6">
+            <div class="mb-4">
+                <label for="box_id" class="block mb-2 font-semibold">Seleccionar Box</label>
+                <select id="box_id" name="box_id" required class="w-full border rounded px-3 py-2">
+                    {% for box in boxes %}
+                    <option value="{{ box.id }}">{{ box.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="date" class="block mb-2 font-semibold">Fecha</label>
+                <input type="date" id="date" name="date" required class="w-full border rounded px-3 py-2" />
+            </div>
+            <div class="mb-4 flex items-center">
+                <input type="checkbox" id="is_available" name="is_available" class="mr-2" checked />
+                <label for="is_available" class="font-semibold">Disponible</label>
+            </div>
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Guardar</button>
+        </form>
+
+        <h2 class="text-xl font-semibold mb-4">Disponibilidad Registrada</h2>
+        <table class="w-full bg-white rounded shadow">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="p-2 text-left">Box</th>
+                    <th class="p-2 text-left">Fecha</th>
+                    <th class="p-2 text-left">Disponible</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for availability in availabilities %}
+                <tr class="border-t">
+                    <td class="p-2">{{ availability.box.name }}</td>
+                    <td class="p-2">{{ availability.date.strftime('%Y-%m-%d') }}</td>
+                    <td class="p-2">{{ 'Sí' if availability.is_available else 'No' }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3" class="p-2 text-center text-gray-500">No hay registros de disponibilidad.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>
