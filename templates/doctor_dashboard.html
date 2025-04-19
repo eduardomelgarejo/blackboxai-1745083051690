@@ -18,13 +18,34 @@
         <h1 class="text-xl font-bold">Doctor Dashboard</h1>
         <a href="{{ url_for('logout') }}" class="hover:underline">Logout</a>
     </nav>
-    <main class="p-6">
-        <h2 class="text-2xl font-semibold mb-4">Welcome, Dr. {{ current_user.username }}</h2>
-        <p class="mb-6">Here you can view your appointments and box assignments.</p>
-        <!-- Placeholder for doctor UI -->
-        <div class="bg-white p-4 rounded shadow">
-            <p>Doctor features will be implemented here.</p>
-        </div>
+    <main class="p-6 max-w-4xl mx-auto">
+        <h2 class="text-2xl font-semibold mb-4">Bienvenido, Dr. {{ current_user.username }}</h2>
+        <p class="mb-6">Aquí puedes ver tus turnos y asignaciones de boxes.</p>
+        <section class="bg-white p-4 rounded shadow">
+            <h3 class="text-xl font-semibold mb-3">Próximos Turnos</h3>
+            {% if appointments %}
+            <table class="w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="border border-gray-300 p-2 text-left">Box</th>
+                        <th class="border border-gray-300 p-2 text-left">Fecha y Hora</th>
+                        <th class="border border-gray-300 p-2 text-left">Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appointment in appointments %}
+                    <tr>
+                        <td class="border border-gray-300 p-2">{{ appointment.box.name }}</td>
+                        <td class="border border-gray-300 p-2">{{ appointment.appointment_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td class="border border-gray-300 p-2">{{ appointment.status }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>No tienes turnos programados.</p>
+            {% endif %}
+        </section>
     </main>
 </body>
 </html>
